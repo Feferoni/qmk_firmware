@@ -19,7 +19,7 @@ uint8_t  CURR_TAP_FRAME  = 0;
 uint32_t       OLED_TIMEOUT_TIME = 0;
 const uint32_t OLED_TIMOUT_LIMIT = 60000;
 
-enum layer_number { _BASE = 0, _LOWER, _RAISE, _ADJUST, _FUNCTION, _NUMPAD };
+enum layer_number { _BASE = 0, _LOWER, _LOWER2, _RAISE, _RAISE2, _ADJUST, _FUNCTION, _NUMPAD };
 
 enum custom_keycodes {
     TILDE = SAFE_RANGE,
@@ -51,14 +51,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-// clang-format off
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
-        KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,        KC_5,                           KC_6,       KC_7,    KC_8,         KC_9,    KC_0,    KC_MINS,
-        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,        KC_T,                           KC_Y,       KC_U,    KC_I,         KC_O,    KC_P,    KC_LBRC,
-        KC_LSFT,  KC_A,    KC_S,    KC_D,    KC_F,        KC_G,                           KC_H,       KC_J,    KC_K,         KC_L,    KC_SCLN, KC_QUOT,
-        KC_LCTL,  KC_Z,    KC_X,    KC_C,    KC_V,        KC_B,       KC_PGDN,   KC_PGUP, KC_N,       KC_M,    KC_COMM,      KC_DOT,  KC_SLSH, KC_RSFT,
-                                    KC_LALT, MO(_NUMPAD), MO(_LOWER), KC_SPC,    KC_ENT,  MO(_RAISE), KC_BSPC, MO(_FUNCTION)
+        KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,        KC_5,                            KC_6,        KC_7,    KC_8,         KC_9,    KC_0,    KC_MINS,
+        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,        KC_T,                            KC_Y,        KC_U,    KC_I,         KC_O,    KC_P,    KC_LBRC,
+        KC_LSFT,  KC_A,    KC_S,    KC_D,    KC_F,        KC_G,                            KC_H,        KC_J,    KC_K,         KC_L,    KC_SCLN, KC_QUOT,
+        KC_LCTL,  KC_Z,    KC_X,    KC_C,    KC_V,        KC_B,        KC_PGDN,   KC_PGUP, KC_N,        KC_M,    KC_COMM,      KC_DOT,  KC_SLSH, KC_RSFT,
+                                    KC_LALT, MO(_NUMPAD), MO(_LOWER2), KC_SPC,    KC_ENT,  MO(_RAISE2), KC_BSPC, MO(_FUNCTION)
     ),
 
     [_LOWER] = LAYOUT(
@@ -67,6 +67,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_NO,   RALT(KC_7), RALT(KC_0), KC_BSLS, TILDE,                           S(KC_EXLM), RALT(KC_8), RALT(KC_9), KC_NO,   KC_NO,   KC_NO,
         KC_TRNS, KC_NO,   KC_NO,      KC_NO,      KC_NO,   KC_NO,         S(KC_6), KC_RPRN, KC_NO,      KC_NO,      KC_NO,      KC_NO,   KC_NO,   KC_NO,
                                       KC_TRNS,    KC_TRNS, KC_TRNS,       KC_TRNS, KC_NO,   KC_TRNS,    KC_TRNS,    KC_TRNS
+    ),
+
+    [_LOWER2] = LAYOUT(
+        KC_TRNS, KC_NO,   KC_NO, KC_NO,   KC_NO,   KC_NO,                    KC_NO,      KC_NO,      KC_NO,      KC_NO,         KC_NO,      KC_NO,
+        KC_TRNS, KC_NO,   KC_NO, KC_NO,   KC_NO,   KC_NO,                    S(KC_MINS), S(KC_8),    S(KC_9),    KC_NUBS,       S(KC_NUBS), KC_NO,
+        KC_TRNS, KC_NO,   KC_NO, KC_NO,   KC_NO,   KC_NO,                    S(KC_1),    RALT(KC_7), RALT(KC_0), RALT(KC_MINS), S(KC_7),    KC_NO,
+        KC_TRNS, KC_NO,   KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_HOME, KC_END, S(KC_0),    RALT(KC_8), RALT(KC_9), BTICK,         ACUTE,      KC_NO,
+                                 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,  KC_NO,      KC_TRNS,    KC_TRNS
     ),
 
     [_ADJUST] = LAYOUT(
@@ -83,6 +91,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_NO,   RALT(KC_MINUS), S(KC_7),     S(KC_5),    S(KC_3),                      KC_LEFT,      KC_DOWN, KC_UP,   KC_RGHT, KC_NO,   KC_NO,
         KC_TRNS, KC_NO,   KC_NO,          KC_NO,       KC_NO,      KC_NO,      KC_HOME, KC_END,  KC_DELETE,    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS,
                                           KC_TRNS,     KC_TRNS,    KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS,      KC_TRNS, KC_TRNS
+    ),
+
+    [_RAISE2] = LAYOUT(
+        KC_TRNS, KC_NO,      KC_NO,         KC_NO,       KC_NO,      KC_NO,                      KC_NO,        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+        KC_TRNS, KC_NO,      RALT(KC_NUBS), TILDE,       S(KC_6),    CARET,                      S(KC_INSERT), KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+        KC_TRNS, RALT(KC_2), S(KC_5),       S(KC_3),     S(KC_BSLS), KC_BSLS,                    KC_LEFT,      KC_DOWN, KC_UP,   KC_RGHT, KC_NO,   KC_NO,
+        KC_TRNS, KC_NO,      KC_NO,         RALT(KC_4),  S(KC_2),    KC_NO,    KC_HOME, KC_END,  KC_DELETE,    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS,
+                                            KC_TRNS,     KC_TRNS,    KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,      KC_TRNS, KC_TRNS
     ),
 
     [_FUNCTION] = LAYOUT(
@@ -203,7 +219,7 @@ static void render_master(void) {
     }
 
     char write_str[80];
-    sprintf(write_str, "      %03d   WPM\n\n      %s", get_current_wpm(), read_layer_state());
+    sprintf(write_str, "      %03d   WPM\n\n   %s", get_current_wpm(), read_layer_state());
     oled_clear();
     oled_write(write_str, false);
 }
